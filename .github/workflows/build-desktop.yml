@@ -32,15 +32,16 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Rebuild native dependencies (sqlite3)
-        run: npm rebuild sqlite3
+      - name: Build Web Assets and Electron Main/Preload
+        run: npm run desktop:build
 
-      - name: Build and Package Executable Distribution
-        run: npm run desktop:dist
+      - name: Package Executables with electron-builder
+        run: npx electron-builder
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4

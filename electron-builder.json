@@ -2,6 +2,12 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "com.biotechcentre.app",
   "productName": "BioTechCentre",
+  "npmRebuild": true,
+  "nodeGypRebuild": false,
+  "asar": true,
+  "asarUnpack": [
+    "**/node_modules/sqlite3/**/*"
+  ],
   "directories": {
     "output": "release"
   },
@@ -9,6 +15,7 @@
     "dist/**/*",
     "dist-electron/**/*",
     "database_data/**/*",
+    "node_modules/**/*",
     "package.json"
   ],
   "extraResources": [
