@@ -2,6 +2,9 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "com.biotechcentre.app",
   "productName": "BioTechCentre",
+  "publish": {
+    "provider": "github"
+  },
   "npmRebuild": true,
   "nodeGypRebuild": false,
   "asar": true,

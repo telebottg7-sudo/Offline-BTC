@@ -29,18 +29,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        shell: bash
+        run: |
+          npm install --include=optional
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            npm install --no-save @rollup/rollup-win32-x64-msvc@4.63.3
+          fi
 
       - name: Build Web Assets and Electron Main/Preload
         run: npm run desktop:build
 
       - name: Package Executables with electron-builder
-        run: npx electron-builder
+        run: npx electron-builder --publish never
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
       - name: Upload Build Artifacts
