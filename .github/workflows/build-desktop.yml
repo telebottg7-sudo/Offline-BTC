@@ -8,6 +8,12 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Publish as a GitHub Release (tag will be v1.0.0 or specified release)'
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -46,21 +52,64 @@ jobs:
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
-      - name: Upload Build Artifacts
+      - name: Verify Generated Installers
+        shell: bash
+        run: |
+          ls -lh release/
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            echo "Checking Windows executables..."
+            ls -lh release/*.exe
+          fi
+
+      - name: Upload Windows Standalone Installer Artifact
+        if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: biotechcentre-${{ runner.os }}-dist
+          name: BioTechCentre-Windows-Setup-Installer
+          path: release/*Setup*.exe
+          if-no-files-found: error
+
+      - name: Upload Windows Portable Executable Artifact
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: BioTechCentre-Windows-Portable-Exe
           path: |
             release/*.exe
-            release/*.AppImage
-            release/*.deb
-            release/*.zip
+            !release/*Setup*.exe
           if-no-files-found: warn
 
-      - name: Release to GitHub Releases (Tags only)
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Upload Linux Dist Artifact
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: BioTechCentre-Linux-Packages
+          path: |
+            release/*.AppImage
+            release/*.deb
+          if-no-files-found: warn
+
+      - name: Determine Release Tag and Name
+        id: release_info
+        shell: bash
+        run: |
+          if [[ "${{ github.ref }}" =~ ^refs/tags/v ]]; then
+            TAG_NAME="${GITHUB_REF#refs/tags/}"
+          else
+            TAG_NAME="v1.0.0"
+          fi
+          echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Publish to GitHub Releases
+        if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.create_release == 'true'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.release_info.outputs.tag_name }}
+          name: BioTechCentre Desktop Release ${{ steps.release_info.outputs.tag_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          make_latest: true
           files: |
             release/*.exe
             release/*.AppImage

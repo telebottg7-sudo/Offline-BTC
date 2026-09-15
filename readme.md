@@ -42,13 +42,16 @@ The generated installers will be in the `release/` folder.
 
 ---
 
-## 🚀 Automated GitHub Actions Build
+## 🚀 Automated GitHub Actions Build & GitHub Releases
 
 A GitHub Workflow is configured at `.github/workflows/build-desktop.yml`:
 1. Push your repository to GitHub.
 2. In your repository, navigate to the **Actions** tab.
-3. Click **Build Desktop Executable Release** → **Run workflow**.
-4. The workflow will automatically compile on Windows & Ubuntu and provide downloadable executable binaries (`.exe`, `.AppImage`, `.deb`) under GitHub Actions **Artifacts** or **Releases** (when pushing a version tag like `v1.0.0`).
+3. Click **Build Desktop Executable Release** → **Run workflow** (or push commits to `main`).
+4. The workflow will automatically:
+   - Compile installers on Windows & Ubuntu.
+   - Publish a new **GitHub Release** (`v1.0.0`) under your repository's **Releases** page (`https://github.com/<owner>/<repo>/releases`) with the setup installer (`.exe`), portable `.exe`, `.AppImage`, and `.deb` directly attached as release assets.
+   - Also upload the files to GitHub Actions **Artifacts** for immediate direct download.
 
 ---
 

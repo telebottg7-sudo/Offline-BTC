@@ -5,8 +5,6 @@
   "publish": {
     "provider": "github"
   },
-  "npmRebuild": true,
-  "nodeGypRebuild": false,
   "asar": true,
   "asarUnpack": [
     "**/node_modules/sqlite3/**/*"
@@ -18,7 +16,6 @@
     "dist/**/*",
     "dist-electron/**/*",
     "database_data/**/*",
-    "node_modules/**/*",
     "package.json"
   ],
   "extraResources": [
@@ -42,10 +39,12 @@
   },
   "nsis": {
     "oneClick": false,
+    "perMachine": false,
     "allowToChangeInstallationDirectory": true,
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "BioTechCentre"
+    "shortcutName": "BioTechCentre",
+    "deleteAppDataOnUninstall": false
   },
   "linux": {
     "target": ["AppImage", "deb"],
