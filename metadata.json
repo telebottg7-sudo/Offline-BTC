@@ -1,0 +1,8 @@
+{
+  "name": "BIOTECHCENTRE",
+  "description": "A comprehensive desktop management system for inventory, customers, purchases, and invoices with local offline SQLite database.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

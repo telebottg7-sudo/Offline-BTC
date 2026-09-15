@@ -1,0 +1,48 @@
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "com.biotechcentre.app",
+  "productName": "BioTechCentre",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*",
+    "dist-electron/**/*",
+    "database_data/**/*",
+    "package.json"
+  ],
+  "extraResources": [
+    {
+      "from": "database_data",
+      "to": "database_data",
+      "filter": ["**/*"]
+    }
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "BioTechCentre"
+  },
+  "linux": {
+    "target": ["AppImage", "deb"],
+    "category": "Office"
+  },
+  "mac": {
+    "target": ["dmg", "zip"],
+    "category": "public.app-category.business"
+  }
+}
