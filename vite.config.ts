@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => {
     const isElectron = process.env.ELECTRON === 'true';
     
     return {
+      base: './',
       server: {
         port: 3000,
         host: '0.0.0.0',
